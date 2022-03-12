@@ -13,10 +13,10 @@ async function getQuery(query) {
   let userData = []
 
   var connection = mysql.createConnection({
-      host     : "database-1-instance-1.cvisdhbbs37x.us-east-1.rds.amazonaws.com",
-      user     : "admin",
-      password : "SuperUser2022#",
-      port     : 3306
+      host     : process.env.HOST,
+      user     : process.env.USER_NAME,
+      password : process.env.PASSWORD,
+      port     : process.env.PORT
     });
 
   connection.connect(function(err) {
