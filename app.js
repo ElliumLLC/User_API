@@ -46,9 +46,9 @@ connection.query(sqlQuery, [true], (error, results, fields) => {
 
 });
 
-return userData;
+connection.end();
 
-  //connection.end();
+return userData;
 
 }
 
