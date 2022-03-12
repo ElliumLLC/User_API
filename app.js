@@ -52,7 +52,7 @@ return userData;
 
 }
 
-app.post('/', async function (req, res) {
+app.post('/api/user', async function (req, res) {
   try {
 
     let query = req.body;
