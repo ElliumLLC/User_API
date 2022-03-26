@@ -8,60 +8,45 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-async function getQuery(query) {
+    let userData = []
 
-  let userData = []
-
-  var connection = mysql.createConnection({
-      host     : process.env.HOST,
-      user     : process.env.USER_NAME,
-      password : process.env.PASSWORD,
-      port     : process.env.PORT
+    var connection = mysql.createConnection({
+        host     : "elliumearth.cvisdhbbs37x.us-east-1.rds.amazonaws.com",
+        user     : "admin",
+        password : "SuperUser2022#",
+        port     : 3306
     });
 
-  connection.connect(function(err) {
-      if (err) {
-        console.error('Database connection failed: ' + err.stack);
-        return;
-      }
-    
-      console.log('Connected to database.');
-    });
-
-let sqlQuery = "SELECT * FROM User.User WHERE ID=" + query.id;
-
-console.log(sqlQuery);
-
-connection.query(sqlQuery, [true], (error, results, fields) => {
-    if (error) {
-      return console.error(error.message);
-    }
-    console.log(results);
-
-    Object.keys(result).forEach(function(key) {
-      var row = result[key];
-      //console.log(row.name)
-      userData.push(row)
-    });
-
-});
-
-connection.end();
-
-return userData;
-
-}
-
-app.post('/api/user', async function (req, res) {
+app.post('/api/user', function (req, res) {
   try {
 
     let query = req.body;
 
     console.log(query.id)
 
-    let userDetails = await getQuery(query)
+    let sqlQuery = "SELECT * FROM User.User WHERE ID=" + query.id;
 
-    res.send(userDetails);
+  console.log(sqlQuery);
+
+  connection.query(sqlQuery, [true], (error, results, fields) => {
+      if (error) {
+        console.error(error.message);
+      }
+      console.log("Results", results);
+      console.log(results.length)
+
+      if(results.length == 0) {
+
+        res.send(404, "The user cannot be found")
+
+      }
+
+      else {
+
+        res.send(results)
+
+      }
+  });
 
   } catch (error) {
     console.log(error);
